@@ -53,7 +53,7 @@ pipeline {
         }
         stage ('docker stop') {
             steps {
-                sh "docker rm $registry:$BUILD_NUMBER"
+                sh "docker container stop $(docker container ls –aq)"
             }
         }
         stage ('cleaning') {
