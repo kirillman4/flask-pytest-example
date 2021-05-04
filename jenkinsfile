@@ -36,6 +36,26 @@ pipeline {
                 }
             }
         }
+        stage ('docker pull') {
+            steps{
+                sh "docker pull $registry:$BUILD_NUMBER"
+            }
+        }
+        stage ('docker run') {
+            steps{
+                sh "docker run -d -p 5000:5000 " + registry + ":$BUILD_NUMBER"
+            }
+        }
+        stage ('curl test') {
+            steps {
+                sh "curl localhost:5000"
+            }
+        }
+        stage ('docker stop') {
+            steps {
+                sh "docker rm $registry:$BUILD_NUMBER"
+            }
+        }
         stage ('cleaning') {
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
