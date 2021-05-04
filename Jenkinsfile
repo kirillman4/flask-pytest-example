@@ -43,7 +43,7 @@ pipeline {
         }
         stage ('docker run') {
             steps{
-                sh "docker run -d -p 5000:5000 " + registry + ":$BUILD_NUMBER"
+                sh "docker run --name homew -d -p 5000:5000 " + registry + ":$BUILD_NUMBER"
             }
         }
         stage ('curl test') {
@@ -53,7 +53,7 @@ pipeline {
         }
         stage ('docker stop') {
             steps {
-                sh "docker container stop $(docker container ls –aq)"
+                sh "docker stop homew"
             }
         }
         stage ('cleaning') {
